@@ -41,11 +41,11 @@ class MySQLDbDriver(AbstractDbDriver):
                 'mysql -h%s -uroot -p%s %s < /db_file'
                 % (self.service["$name"], self.service['driver']['config']['password'],
                    self.service['driver']['config']['database']),
-            'additional_volumes': [{
+            'additional_volumes': {"import": {
                 'host': absolute_path_to_import_object,
                 'container': '/db_file',
                 'mode': 'ro'
-            }]
+            }}
         })
         command.validate()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
@@ -61,11 +61,11 @@ class MySQLDbDriver(AbstractDbDriver):
                 'mysqldump -h%s -uroot -p%s %s > /db_folder/%s'
                 % (self.service["$name"], self.service['driver']['config']['password'],
                    self.service['driver']['config']['database'], name_of_file),
-            'additional_volumes': [{
+            'additional_volumes': {"export": {
                 'host': file_dir,
                 'container': '/db_folder',
                 'mode': 'rw'
-            }]
+            }}
         })
         command.validate()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
@@ -77,11 +77,11 @@ class MySQLDbDriver(AbstractDbDriver):
         return {host_path: {'bind': DATA_PATH, 'mode': 'rw'}}
 
     def collect_additional_ports(self):
-        return [{
+        return {"mysql": {
             'title': 'MySQL Port',
             'container': PORT,
             'host_start': PORT
-        }]
+        }}
 
     def collect_environment(self):
         return {
