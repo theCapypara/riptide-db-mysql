@@ -4,9 +4,15 @@ setup(
     name='riptide_db_mysql',
     version='0.1',
     packages=find_packages(),
-    include_package_data=True,
+    description='TODO',  # TODO
+    long_description='TODO',  # TODO
     install_requires=[
-        # TODO
+        'riptide_lib == 0.1',
+        'schema >= 0.6'
+    ],
+    # TODO
+    classifiers=[
+        'Programming Language :: Python',
     ],
     entry_points='''
         [riptide.db_driver]
