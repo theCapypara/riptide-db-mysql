@@ -1,2 +1,2 @@
 schema==0.6
-riptide_lib >= 0.1, < 0.2
+riptide-lib >= 0.1, < 0.2
