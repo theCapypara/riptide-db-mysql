@@ -24,7 +24,11 @@
 .. _repo:           https://github.com/Parakoopa/riptide-repo
 .. _docker_images:  https://github.com/Parakoopa/riptide-docker-images
 
-|docs|
+|build| |docs|
+
+.. |build| image:: https://jenkins.riptide.parakoopa.de/buildStatus/icon?job=riptide-db-mysql%2Fmaster
+    :target: https://jenkins.riptide.parakoopa.de/blue/organizations/jenkins/riptide-db-mysql/activity
+    :alt: Build Status
 
 .. |docs| image:: https://readthedocs.org/projects/riptide-docs/badge/?version=latest
     :target: https://riptide-docs.readthedocs.io/en/latest/?badge=latest
