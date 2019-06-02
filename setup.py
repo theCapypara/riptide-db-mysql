@@ -9,14 +9,14 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='riptide-db_mysql',
-    version='0.1.1',
+    version='0.2.0',
     packages=find_packages(),
     description='Tool to manage development environments for web applications using containers - MySQL Database Drvier',
     long_description=long_description,
     long_description_content_type='text/x-rst',
     url='https://github.com/Parakoopa/riptide-db-mysql/',
     install_requires=[
-        'riptide-lib >= 0.1, < 0.2',
+        'riptide-lib >= 0.2, < 0.3',
         'schema >= 0.6'
     ],
     classifiers=[
