@@ -8,6 +8,8 @@ from riptide.db.environments import DbEnvironments
 from riptide.engine.abstract import AbstractEngine
 
 IMAGE_NAME = 'mysql'
+# Driver is mariadb compatible
+IMAGE_NAME_MARIADB = 'mariadb'
 DATA_PATH = '/var/lib/mysql'
 ENV_PW = 'MYSQL_ROOT_PASSWORD'
 ENV_DB = 'MYSQL_DATABASE'
@@ -25,7 +27,7 @@ class MySQLDbDriver(AbstractDbDriver):
         A mysql database driver may only be used with 'mysql' images.
         It's config must include password and database.
         """
-        if self.service["image"].split(":")[0] != IMAGE_NAME:
+        if self.service["image"].split(":")[0] != IMAGE_NAME and self.service["image"].split(":")[0] != IMAGE_NAME_MARIADB:
             raise DbValidationError("%s service: A mysql database driver may only be used with 'mysql' images." % self.service["$name"])
 
         # validate schema
