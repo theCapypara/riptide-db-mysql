@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='riptide-db_mysql',
-    version='0.3.0',
+    version='0.3.1',
     packages=find_packages(),
     description='Tool to manage development environments for web applications using containers - MySQL Database Drvier',
     long_description=long_description,
