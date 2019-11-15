@@ -17,7 +17,7 @@ setup(
     url='https://github.com/Parakoopa/riptide-db-mysql/',
     install_requires=[
         'riptide-lib >= 0.3, < 0.4',
-        'schema >= 0.6'
+        'schema >= 0.7'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -26,6 +26,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     entry_points='''
         [riptide.db_driver]
