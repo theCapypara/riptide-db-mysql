@@ -28,7 +28,7 @@ class MySQLDbDriver(AbstractDbDriver):
         It's config must include password and database.
         """
         if self.service["image"].split(":")[0] != IMAGE_NAME and self.service["image"].split(":")[0] != IMAGE_NAME_MARIADB:
-            raise DbValidationError("%s service: A mysql database driver may only be used with 'mysql' images." % self.service["$name"])
+            raise DbValidationError(f"{self.service['$name']} service: A mysql database driver may only be used with 'mysql' images.")
 
         # validate schema
         return Schema({
@@ -40,9 +40,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command = Command({
             'image': self.service["image"],
             'command':
-                'mysql -h%s -uroot -p%s %s < /db_file'
-                % (self.service["$name"], self.service['driver']['config']['password'],
-                   self.service['driver']['config']['database']),
+                f'mysql -h{self.service["$name"]} -uroot -p{self.service["driver"]["config"]["password"]} {self.service["driver"]["config"]["database"]} < /db_file',
             'additional_volumes': {"import": {
                 'host': absolute_path_to_import_object,
                 'container': '/db_file',
@@ -52,7 +50,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command.validate()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
-            raise DbImportExport('MySQL command failed: %s' % log.decode('utf-8'))
+            raise DbImportExport(f'MySQL command failed: {log.decode("utf-8")}')
 
     def export(self, engine: AbstractEngine, absolute_path_to_export_target):
         name_of_file = os.path.basename(absolute_path_to_export_target)
@@ -60,9 +58,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command = Command({
             'image': self.service["image"],
             'command':
-                'mysqldump -h%s -uroot -p%s %s > /db_folder/%s'
-                % (self.service["$name"], self.service['driver']['config']['password'],
-                   self.service['driver']['config']['database'], name_of_file),
+                f'mysqldump -h{self.service["$name"]} -uroot -p{self.service["driver"]["config"]["password"]} {self.service["driver"]["config"]["database"]} > /db_folder/{name_of_file}',
             'additional_volumes': {"export": {
                 'host': file_dir,
                 'container': '/db_folder',
@@ -72,7 +68,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command.validate()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
-            raise DbImportExport('MySQL command failed: %s' % log.decode('utf-8'))
+            raise DbImportExport(f'MySQL command failed: {log.decode("utf-8")}')
 
     def collect_volumes(self):
         host_path = DbEnvironments.path_for_db_data(self.service)
