@@ -1,8 +1,11 @@
+from typing import Dict
+
 import os
 
 from schema import Schema
 
 from riptide.config.document.command import Command
+from riptide.config.service.ports import get_existing_port_mapping
 from riptide.db.driver.abstract import AbstractDbDriver, DbValidationError, DbImportExport
 from riptide.db.environments import DbEnvironments
 from riptide.engine.abstract import AbstractEngine
@@ -24,11 +27,12 @@ class MySQLDbDriver(AbstractDbDriver):
 
     def validate_service(self) -> bool:
         """
-        A mysql database driver may only be used with 'mysql' images.
+        A mysql database driver may only be used with 'mysql' or mariadb images.
         It's config must include password and database.
         """
         if self.service["image"].split(":")[0] != IMAGE_NAME and self.service["image"].split(":")[0] != IMAGE_NAME_MARIADB:
-            raise DbValidationError(f"{self.service['$name']} service: A mysql database driver may only be used with 'mysql' images.")
+            raise DbValidationError(f"{self.service['$name']} service: A mysql database "
+                                    f"driver may only be used with '{IMAGE_NAME}' or '{IMAGE_NAME_MARIADB}' images.")
 
         # validate schema
         return Schema({
@@ -86,3 +90,15 @@ class MySQLDbDriver(AbstractDbDriver):
             ENV_PW:  self.service['driver']['config']['password'],
             ENV_DB:  self.service['driver']['config']['database']
         }
+
+    def collect_info(self) -> Dict[str, str]:
+        port = get_existing_port_mapping(self.service.get_project(), self.service, PORT)
+        if port is None:
+            port = "Unknown. Start the database for the first time, to assign a port."
+        return {
+            'Port': port,
+            'Username': 'root',
+            'Password': self.service['driver']['config']['password'],
+            'Main Database': self.service['driver']['config']['database']
+        }
+
