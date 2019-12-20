@@ -76,7 +76,12 @@ class MySQLDbDriver(AbstractDbDriver):
 
     def collect_volumes(self):
         host_path = DbEnvironments.path_for_db_data(self.service)
-        return {host_path: {'bind': DATA_PATH, 'mode': 'rw'}}
+        env_name = DbEnvironments(self.service.get_project(), None).currently_selected_name()
+        return {host_path: {
+            'bind': DATA_PATH,
+            'mode': 'rw',
+            'name': f'{self.service.get_project()["name"]}__db_mysql__{env_name}'
+        }}
 
     def collect_additional_ports(self):
         return {"mysql": {
