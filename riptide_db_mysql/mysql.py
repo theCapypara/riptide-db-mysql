@@ -75,13 +75,7 @@ class MySQLDbDriver(AbstractDbDriver):
             raise DbImportExport(f'MySQL command failed: {log.decode("utf-8")}')
 
     def collect_volumes(self):
-        host_path = DbEnvironments.path_for_db_data(self.service)
-        env_name = DbEnvironments(self.service.get_project(), None).currently_selected_name()
-        return {host_path: {
-            'bind': DATA_PATH,
-            'mode': 'rw',
-            'name': f'{self.service.get_project()["name"]}__db_mysql__{env_name}'
-        }}
+        return DbEnvironments.get_volume_config_for_driver(DATA_PATH, self.service)
 
     def collect_additional_ports(self):
         return {"mysql": {
