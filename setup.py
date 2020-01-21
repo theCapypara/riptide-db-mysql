@@ -16,7 +16,7 @@ setup(
     long_description_content_type='text/x-rst',
     url='https://github.com/Parakoopa/riptide-db-mysql/',
     install_requires=[
-        'riptide-lib >= 0.5, < 0.6',
+        'riptide-lib >= 0.5rc1, < 0.6',
         'schema >= 0.7'
     ],
     classifiers=[
