@@ -15,7 +15,7 @@ setup(
     description='Tool to manage development environments for web applications using containers - MySQL Database Drvier',
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    url='https://github.com/Parakoopa/riptide-db-mysql/',
+    url='https://github.com/theCapypara/riptide-db-mysql/',
     install_requires=[
         'riptide-lib >= 0.7, < 0.8',
         'schema >= 0.7'
