@@ -1,4 +1,4 @@
-__version__ = '0.6.0'
+__version__ = '0.7.0'
 from setuptools import setup, find_packages
 
 # README read-in
@@ -17,7 +17,7 @@ setup(
     long_description_content_type='text/x-rst',
     url='https://github.com/Parakoopa/riptide-db-mysql/',
     install_requires=[
-        'riptide-lib >= 0.6, < 0.7',
+        'riptide-lib >= 0.7, < 0.8',
         'schema >= 0.7'
     ],
     classifiers=[
