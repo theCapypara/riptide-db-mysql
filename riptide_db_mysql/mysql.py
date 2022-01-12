@@ -41,7 +41,7 @@ class MySQLDbDriver(AbstractDbDriver):
         }).validate(self.service['driver']['config'])
 
     def importt(self, engine: AbstractEngine, absolute_path_to_import_object):
-        command = Command({
+        command = Command.from_dict({
             'image': self.service["image"],
             'command':
                 f'mysql -h{self.service["$name"]} -uroot -p{self.service["driver"]["config"]["password"]} {self.service["driver"]["config"]["database"]} < /db_file',
@@ -52,6 +52,7 @@ class MySQLDbDriver(AbstractDbDriver):
             }}
         })
         command.validate()
+        command.freeze()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
             raise DbImportExport(f'MySQL command failed: {log.decode("utf-8")}')
@@ -59,7 +60,7 @@ class MySQLDbDriver(AbstractDbDriver):
     def export(self, engine: AbstractEngine, absolute_path_to_export_target):
         name_of_file = os.path.basename(absolute_path_to_export_target)
         file_dir = os.path.abspath(os.path.join(absolute_path_to_export_target, '..'))
-        command = Command({
+        command = Command.from_dict({
             'image': self.service["image"],
             'command':
                 f'mysqldump -h{self.service["$name"]} -uroot -p{self.service["driver"]["config"]["password"]} {self.service["driver"]["config"]["database"]} > /db_folder/{name_of_file}',
@@ -70,6 +71,7 @@ class MySQLDbDriver(AbstractDbDriver):
             }}
         })
         command.validate()
+        command.freeze()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
             raise DbImportExport(f'MySQL command failed: {log.decode("utf-8")}')
