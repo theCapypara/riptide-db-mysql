@@ -1,4 +1,4 @@
-__version__ = '0.8.0b1'
+__version__ = '0.8.0'
 from setuptools import setup, find_packages
 
 # README read-in
@@ -17,7 +17,7 @@ setup(
     long_description_content_type='text/x-rst',
     url='https://github.com/theCapypara/riptide-db-mysql/',
     install_requires=[
-        'riptide-lib >= 0.8.0b1, < 0.9',
+        'riptide-lib >= 0.8.0, < 0.9',
         'schema >= 0.7'
     ],
     classifiers=[
