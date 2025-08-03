@@ -1,14 +1,14 @@
-from typing import Dict
-
 import os
-
-from schema import Schema
 
 from riptide.config.document.command import Command
 from riptide.config.service.ports import get_existing_port_mapping
-from riptide.db.driver.abstract import AbstractDbDriver, DbValidationError, DbImportExport
+from riptide.db.driver.abstract import (
+    AbstractDbDriver,
+    DbImportExport,
+)
 from riptide.db.environments import DbEnvironments
 from riptide.engine.abstract import AbstractEngine
+from schema import Schema
 
 DATA_PATH = "/var/lib/mysql"
 ENV_PW = "MYSQL_ROOT_PASSWORD"
@@ -45,7 +45,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command.freeze()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
-            raise DbImportExport(f"MySQL command failed: {log.decode('utf-8')}")
+            raise DbImportExport(f"MySQL command failed: {log}")
 
     def export(self, engine: AbstractEngine, absolute_path_to_export_target):
         name_of_file = os.path.basename(absolute_path_to_export_target)
@@ -61,7 +61,7 @@ class MySQLDbDriver(AbstractDbDriver):
         command.freeze()
         (exit_code, log) = engine.cmd_detached(self.service.get_project(), command)
         if exit_code != 0:
-            raise DbImportExport(f"MySQL command failed: {log.decode('utf-8')}")
+            raise DbImportExport(f"MySQL command failed: {log}")
 
     def collect_volumes(self):
         return DbEnvironments.get_volume_configuration_for_driver(DATA_PATH, self.service)
@@ -75,12 +75,11 @@ class MySQLDbDriver(AbstractDbDriver):
             ENV_DB: self.service["driver"]["config"]["database"],
         }
 
-    def collect_info(self) -> Dict[str, str]:
+    def collect_info(self) -> dict[str, str]:
         port = get_existing_port_mapping(self.service.get_project(), self.service, PORT)
-        if port is None:
-            port = "Unknown. Start the database for the first time, to assign a port."
+        portstr = str(port) if port else "Unknown. Start the database for the first time, to assign a port."
         return {
-            "Port": port,
+            "Port": portstr,
             "Username": "root",
             "Password": self.service["driver"]["config"]["password"],
             "Main Database": self.service["driver"]["config"]["database"],
